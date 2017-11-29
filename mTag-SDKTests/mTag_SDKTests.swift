@@ -27,6 +27,7 @@ class mTag_SDKTests: XCTestCase, BlueBiteInteractionDelegate {
     override func setUp() {
         super.setUp()
         API.delegate = self
+        API.enableDebug = true
     }
     
     override func tearDown() {
@@ -97,7 +98,6 @@ class mTag_SDKTests: XCTestCase, BlueBiteInteractionDelegate {
         XCTAssertEqual(res!, expectedId)
 
         // test good hid url with extra arguments
-        // TODO DOUBLE CHECK THAT THIS SHOULD SUCCEED
         res = API.parseIdFrom(url: "https://mtag.io/njaix4?tagId=999999&tac=888888&something=else")
         XCTAssertEqual(res!, expectedId)
 
