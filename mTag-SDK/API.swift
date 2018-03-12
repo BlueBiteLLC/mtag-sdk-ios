@@ -21,7 +21,7 @@ open class API: NSObject {
   // length of a base 10 format mTag ID
   static let MTAG_ID_B10_LENGTH: Int = 8
   // length of a base 36 format mTag ID
-  static let MTAG_ID_B36_LENGTH: Int = 5
+  static let MTAG_ID_B36_LENGTH: Int = 6
   // length of tech prefix affixed to mTag ID
   static let TECH_PREFIX: Int = 1
 
@@ -88,7 +88,7 @@ open class API: NSObject {
   class func parseIdFrom(url: String) -> String? {
     var urlTail = url.components(separatedBy: "/").last!
 
-    if urlTail.count == MTAG_ID_B10_LENGTH + TECH_PREFIX || urlTail.count == MTAG_ID_B36_LENGTH + TECH_PREFIX {
+    if urlTail.count <= MTAG_ID_B10_LENGTH + TECH_PREFIX || urlTail.count <= MTAG_ID_B36_LENGTH + TECH_PREFIX {
       urlTail.remove(at: urlTail.startIndex) // drop tech type
       return convertIdToBase10(urlTail)
     }
@@ -119,7 +119,7 @@ open class API: NSObject {
         return nil
       }
     }
-    else if id.count == MTAG_ID_B36_LENGTH {
+    else if id.count <= MTAG_ID_B36_LENGTH {
       return String(strtoul(id, nil, 36))
     }
     else {
@@ -235,8 +235,15 @@ open class API: NSObject {
     formattedResponse["deviceCountry"] = device?["country"] as? String ?? nil
 
     formattedResponse["tagVerified"] = jsonAsDict["tag_verified"] as? String ?? nil
-    formattedResponse["campaigns"] = jsonAsDict["campaigns"] as? [String: Any] ?? nil
     formattedResponse["location"] = jsonAsDict["location"] as? [String: Any] ?? nil
+
+    // make sure we get either a single campaign or multiple campaigns (if there are multiple)
+    if let campaigns = jsonAsDict["campaigns"] as? [String: Any] {
+      formattedResponse["campaigns"] = campaigns
+    }
+    else {
+      formattedResponse["campaigns"] = jsonAsDict["campaigns"] as? [Any] ?? nil
+    }
 
     // TODO: This could be deprecated by using Struct/encoding, but this seems safer
     if var location = formattedResponse["location"] as? [String: Any] {
