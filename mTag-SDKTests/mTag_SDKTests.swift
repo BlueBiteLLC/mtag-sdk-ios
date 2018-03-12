@@ -16,7 +16,7 @@ class mTag_SDKTests: XCTestCase, BlueBiteInteractionDelegate {
   // MARK: BlueBiteInteractionDelegate
   func interactionDataWasReceived(withResults result: [String : Any]) {
     print("response was received: \(result)")
-    if result["location"] != nil && result["campaigns"] != nil && result["deviceCountry"] == "US" {
+    if result["location"] != nil && result["campaigns"] != nil && result["deviceCountry"] as? String == "US" {
       basicTagSuccessExpectation?.fulfill()
     }
   }
@@ -49,7 +49,7 @@ class mTag_SDKTests: XCTestCase, BlueBiteInteractionDelegate {
     API.interactionWasReceived(withUrl: url)
     self.waitForExpectations(timeout: 10.0, handler: nil)
   }
-  
+
   /*
    Calls to API.convertIdToBase10(_ id:) should:
    - Receive a potential mTag ID and successfully parse it and convert it to Base 10.
@@ -68,9 +68,6 @@ class mTag_SDKTests: XCTestCase, BlueBiteInteractionDelegate {
     res = API.convertIdToBase10("1234567#")
     XCTAssertNil(res)
     
-    //test invalid id too short
-    res = API.convertIdToBase10("123")
-    XCTAssertNil(res)
     //test invalid id too long
     res = API.convertIdToBase10("1234567890")
     XCTAssertNil(res)
