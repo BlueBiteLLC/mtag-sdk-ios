@@ -247,14 +247,23 @@ open class API: NSObject {
 
     // TODO: This could be deprecated by using Struct/encoding, but this seems safer
     if var location = formattedResponse["location"] as? [String: Any] {
-      // data and system keys are arrays and should be explicitly converted to them
-      let cleanData: [String] = location["data"] as? [String] ?? []
-      let cleanSystem: [String] = location["system"] as? [String] ?? []
-      location["data"] = cleanData
-      location["system"] = cleanSystem
+      // data and system might be arrays or might be dicts, so try casting to both
+      if let cleanDataAsArray = location["data"] as? [String] ?? nil {
+        location["data"] = cleanDataAsArray
+      }
+      else {  // must be either not included or nil
+        location["data"] = location["data"] as? [String: Any] ?? nil
+      }
+
+      if let cleanSystemAsArray: [String] = location["system"] as? [String] ?? nil {
+        location["system"] = cleanSystemAsArray
+      }
+      else {
+        location["system"] = location["system"] as? [String: Any] ?? nil
+      }
+      
       formattedResponse["location"] = location
     }
-
     return formattedResponse
   }
 }
