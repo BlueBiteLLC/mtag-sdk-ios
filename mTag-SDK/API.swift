@@ -160,7 +160,7 @@ open class API: NSObject {
     var urlArgs = urlParts.last!.components(separatedBy: "?").last!.components(separatedBy: "&")
 
     var params: [String: String] = [:]
-    let expectedArgs = ["tagId": "tagID", "tac": "tac"]
+    let expectedArgs = ["tagID": "tagID", "tagId": "tagID", "tac": "tac"]
     for urlArg in urlArgs {
       let splitArg = urlArg.components(separatedBy: "=")
       let argName = String(splitArg[0])
@@ -234,7 +234,17 @@ open class API: NSObject {
     let device = jsonAsDict["device"] as? [String: Any] ?? nil
     formattedResponse["deviceCountry"] = device?["country"] as? String ?? nil
 
-    formattedResponse["tagVerified"] = jsonAsDict["tag_verified"] as? String ?? nil
+    // get tagVerified.  Should return as Int but check for String just for robustness
+    if let verified = jsonAsDict["tag_verified"] as? Int {
+      formattedResponse["tagVerified"] = verified == 1 ? true : false
+    }
+    else if let verified = jsonAsDict["tag_verified"] as? String {
+      formattedResponse["tagVerified"] = verified.lowercased() == "true" ? true : false
+    }
+    else {
+      // probably wasn't included so just leave it out
+    }
+
     formattedResponse["location"] = jsonAsDict["location"] as? [String: Any] ?? nil
 
     // make sure we get either a single campaign or multiple campaigns (if there are multiple)
