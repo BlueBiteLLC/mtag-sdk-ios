@@ -118,7 +118,7 @@ class mTag_SDKTests: XCTestCase, BlueBiteInteractionDelegate {
     XCTAssertEqual(res, ["tag_signature": "456789", "tag_version": "890123", "tag_uid": "1234567"])
     
     // test good hid url
-    targetUrl = "https://mtag.io/njaix4?tagId=654321&tac=123456"
+    targetUrl = "https://mtag.io/njaix4?tagID=654321&tac=123456"
     res = API.handleHidUrl(withUrlParts: targetUrl.components(separatedBy: "/"))
     XCTAssertEqual(res, ["tac": "123456", "tagID": "654321"])
     
