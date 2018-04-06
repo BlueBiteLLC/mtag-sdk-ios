@@ -115,12 +115,12 @@ class mTag_SDKTests: XCTestCase, BlueBiteInteractionDelegate {
     // test good auth url
     var targetUrl: String = "https://mtag.io/njaix4?id=1234567&num=890123&sig=456789"
     var res = API.handleAuthUrl(withUrlParts: targetUrl.components(separatedBy: "/"))
-    XCTAssertEqual(res, ["tag_signature": "456789", "tag_version": "890123", "tag_uid": "1234567"])
+    XCTAssertEqual(res, ["vid": "456789", "tag_version": "890123", "uid": "1234567"])
     
     // test good hid url
     targetUrl = "https://mtag.io/njaix4?tagID=654321&tac=123456"
     res = API.handleHidUrl(withUrlParts: targetUrl.components(separatedBy: "/"))
-    XCTAssertEqual(res, ["tac": "123456", "tagID": "654321"])
+    XCTAssertEqual(res, ["vid": "123456", "hid": "654321"])
     
     // test good counter url
     targetUrl = "https://mtag.io/njaix4/12345678x1234561234"
@@ -130,12 +130,12 @@ class mTag_SDKTests: XCTestCase, BlueBiteInteractionDelegate {
     // test bad auth url
     targetUrl = "https://mtag.io/njaix4?badkey=failure&id=1234567&num=890123&sig=456789"
     res = API.handleAuthUrl(withUrlParts: targetUrl.components(separatedBy: "/"))
-    XCTAssertEqual(res, ["tag_signature": "456789", "tag_version": "890123", "tag_uid": "1234567"])
+    XCTAssertEqual(res, ["vid": "456789", "tag_version": "890123", "uid": "1234567"])
     
     // test bad hid url
     targetUrl = "https://mtag.io/njaix4?tagId=654321&badfield=yes&tac=123456"
     res = API.handleHidUrl(withUrlParts: targetUrl.components(separatedBy: "/"))
-    XCTAssertEqual(res, ["tac": "123456", "tagID": "654321"])
+    XCTAssertEqual(res, ["vid": "123456", "hid": "654321"])
     
     // test bad counter url
     targetUrl = "https://mtag.io/njaix4/12345678x1234561234?thisShouldnt=beHere"
