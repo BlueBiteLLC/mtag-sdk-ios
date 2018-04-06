@@ -128,7 +128,6 @@ open class API: NSObject {
     }
   }
 
-  // TODO VERIFY PARAM KEYS USING ANDROID NFC VERIFICATION CODE
   /**
    Parses an Auth URL into a dictionary.
    ex: https:// mtag.io/n10130797?id=<UID>&num=<Number>&sig=<Signature>
