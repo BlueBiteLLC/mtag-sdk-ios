@@ -159,7 +159,7 @@ open class API: NSObject {
     var urlArgs = urlParts.last!.components(separatedBy: "?").last!.components(separatedBy: "&")
 
     var params: [String: String] = [:]
-    let expectedArgs = ["tagID": "hid", "tagId": "hid", "tac": "vid"]
+    let expectedArgs = ["tagID": "hid", "tac": "vid"]
     for urlArg in urlArgs {
       let splitArg = urlArg.components(separatedBy: "=")
       let argName = String(splitArg[0])
