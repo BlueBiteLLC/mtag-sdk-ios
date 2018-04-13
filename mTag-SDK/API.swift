@@ -30,6 +30,9 @@ open class API: NSObject {
   // user-accessible constant to enable debug output
   open static var enableDebug: Bool = false
 
+  // user-accessible flag to enable overwriting Alamofire's default User-Agent
+  open static var overrideUserAgent: Bool = false
+
   /**
    Simple logger to prevent extra noise during production.
    */
@@ -200,8 +203,15 @@ open class API: NSObject {
 
     _log("Params: \(mutableParams)", level: "DEBUG")
 
+    // override the user agent if the user chooses
+    var additionalHeaders : [String: String]?
+    if self.overrideUserAgent {
+      additionalHeaders = [:]
+      additionalHeaders!["User-Agent"] = "mTag-SDK request/Alamofire4.x"
+    }
+
     let targetUrl = "https://api.mtag.io/v2/interactions"
-    Alamofire.request(targetUrl, method: HTTPMethod.post, parameters: mutableParams).responseJSON { response in
+    Alamofire.request(targetUrl, method: HTTPMethod.post, parameters: mutableParams, headers: additionalHeaders).responseJSON { response in
       if let json = response.result.value {
         if let jsonAsDict = json as? [String: Any] {
           let formattedResponse = parseAPIResponse(jsonAsDict)
