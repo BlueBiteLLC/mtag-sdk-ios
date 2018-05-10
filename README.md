@@ -21,3 +21,7 @@ API.delegate = self
 5. If desired, enable Debugging output by setting the `API.enableDebug` flag to `true`.
 6. Pass the Interaction URL to be registered to `API.interactionWasReceived(withUrl url: String)`
 7. Handle the response passed to the proper `BlueBiteInteractionDelegate` method.
+
+### License
+
+This SDK is licensed under `Apache 2.0`, please see the `LICENSE.txt` file for more information.
