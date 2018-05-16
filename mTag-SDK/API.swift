@@ -190,19 +190,16 @@ open class API: NSObject {
 
   /**
    Parses a Counter URL into a dictionary.
-   ex: https:// mtag.io/n10130797/<UID>x<Number_6char><Fix2> (drop Fix2)
+   ex: https:// mtag.io/n10130797/<UID>x<Number_6char><Fix2>
    */
   class func handleCounterUrl(withUrlParts urlParts: [String]) -> [String: String] {
     _log("Handling Counter Url", level: "DEBUG")
     var params: [String: String] = [:]
-    let uidAndCounter = urlParts.last!.components(separatedBy: "x")
+    let urlEnd = urlParts.last!
+    // make sure to trim any extra params
+    let fullVid = urlEnd.components(separatedBy: "?").first!
 
-    let uid = uidAndCounter[0]
-    let counterWithFix = uidAndCounter[1]
-    let counter = String(counterWithFix.dropLast(counterWithFix.count - 6))
-
-    params["uid"] = uid
-    params["count"] = counter
+    params["vid"] = fullVid
     return params
   }
 
