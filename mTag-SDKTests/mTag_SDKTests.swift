@@ -125,7 +125,7 @@ class mTag_SDKTests: XCTestCase, BlueBiteInteractionDelegate {
     // test good counter url
     targetUrl = "https://mtag.io/njaix4/12345678x1234561234"
     res = API.handleCounterUrl(withUrlParts: targetUrl.components(separatedBy: "/"))
-    XCTAssertEqual(res, ["uid": "12345678", "count": "123456"])
+    XCTAssertEqual(res, ["vid": "12345678x1234561234"])
     
     // test bad auth url
     targetUrl = "https://mtag.io/njaix4?badkey=failure&id=1234567&num=890123&sig=456789"
@@ -140,6 +140,6 @@ class mTag_SDKTests: XCTestCase, BlueBiteInteractionDelegate {
     // test bad counter url
     targetUrl = "https://mtag.io/njaix4/12345678x1234561234?thisShouldnt=beHere"
     res = API.handleCounterUrl(withUrlParts: targetUrl.components(separatedBy: "/"))
-    XCTAssertEqual(res, ["uid": "12345678", "count": "123456"])
+    XCTAssertEqual(res, ["vid": "12345678x1234561234"])
   }
 }
