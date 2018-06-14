@@ -47,6 +47,10 @@ open class API: NSObject {
   // user-accessible flag to enable overwriting Alamofire's default User-Agent
   open static var overrideUserAgent: Bool = false
 
+  // user-accessible flag to enable overwriting the request's cookie.
+  // mostly included for compatibility with Decode
+  open static var overrideHeaderCookie: Bool = false
+
   /**
    Simple logger to prevent extra noise during production.
    */
@@ -215,10 +219,12 @@ open class API: NSObject {
     _log("Params: \(mutableParams)", level: "DEBUG")
 
     // override the user agent if the user chooses
-    var additionalHeaders : [String: String]?
+    var additionalHeaders : [String: String] = [:]
     if self.overrideUserAgent {
-      additionalHeaders = [:]
-      additionalHeaders!["User-Agent"] = "mTag-SDK request/Alamofire4.x"
+      additionalHeaders["User-Agent"] = "mTag-SDK request/Alamofire4.x"
+    }
+    if self.overrideHeaderCookie {
+      additionalHeaders["Cookie"] = ""
     }
 
     let targetUrl = "https://api.mtag.io/v2/interactions"
