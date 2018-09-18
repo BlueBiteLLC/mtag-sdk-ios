@@ -39,17 +39,17 @@ open class API: NSObject {
   // length of tech prefix affixed to mTag ID
   static let TECH_PREFIX: Int = 1
 
-  open static var delegate: BlueBiteInteractionDelegate?
+  public static var delegate: BlueBiteInteractionDelegate?
 
   // user-accessible constant to enable debug output
-  open static var enableDebug: Bool = false
+  public static var enableDebug: Bool = false
 
   // user-accessible flag to enable overwriting Alamofire's default User-Agent
-  open static var overrideUserAgent: Bool = false
+  public static var overrideUserAgent: Bool = false
 
   // user-accessible flag to enable overwriting the request's cookie.
   // mostly included for compatibility with Decode
-  open static var overrideHeaderCookie: Bool = false
+  public static var overrideHeaderCookie: Bool = false
 
   /**
    Simple logger to prevent extra noise during production.
@@ -177,7 +177,7 @@ open class API: NSObject {
    */
   class func handleHidUrl(withUrlParts urlParts: [String]) -> [String: String] {
     _log("Handling Hid Url", level: "DEBUG")
-    var urlArgs = urlParts.last!.components(separatedBy: "?").last!.components(separatedBy: "&")
+    let urlArgs = urlParts.last!.components(separatedBy: "?").last!.components(separatedBy: "&")
 
     var params: [String: String] = [:]
     let expectedArgs = ["tagID": "hid", "tac": "vid"]
@@ -241,7 +241,7 @@ open class API: NSObject {
         return
       }
       else if response.error != nil {
-        self._log("Interaction Registration Request failed: \(response.error)", level: "ERROR")
+        self._log("Interaction Registration Request failed: \(String(describing: response.error))", level: "ERROR")
         delegate?.didFailToReceiveInteractionData("Alamofire was unable to process the request.")
         return
       }
