@@ -260,6 +260,11 @@ open class API: NSObject {
     let device = jsonAsDict["device"] as? [String: Any] ?? nil
     formattedResponse["deviceCountry"] = device?["country"] as? String ?? nil
 
+    if let tampered = jsonAsDict["tampered"] as? Bool {
+      // true if closed, false if opened, null if registered as tamper but not verified by dashboard
+      formattedResponse["tampered"] = tampered
+    }
+
     // get tagVerified.  Should return as Int but check for String just for robustness
     if let verified = jsonAsDict["tag_verified"] as? Int {
       formattedResponse["tagVerified"] = verified == 1 ? true : false
