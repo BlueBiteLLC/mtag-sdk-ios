@@ -68,7 +68,13 @@ open class API: NSObject {
   open class func interactionWasReceived(withUrl url: String) {
     _log("Interaction was received with URL: \(url)", level: "DEBUG")
     let urlParts = url.components(separatedBy: "/")
-    _log("urlParts: \(urlParts)", level: "DEBUG")
+
+    // if we have a url with a < 6 length slug we can pass the whole url to the interaction
+    if let slug: String = String(url.split(separator: "?")[0].split(separator: "/").last!) {
+      if slug.count < MTAG_ID_B36_LENGTH {
+        return registerInteraction(withUrl: url)
+      }
+    }
 
     // make sure the URL has a mTag ID or at least something that looks like an mTag ID
     guard let mTagId = parseIdFrom(url: url) else {
@@ -208,16 +214,31 @@ open class API: NSObject {
   }
 
   /**
-   Handles the actual registration of the interaction, and passes the parsed response to the delegate.
+   Handles the case where we need to pass an unmutated URL to the interactions route.
+   */
+  class func registerInteraction(withUrl url: String) {
+    let params : [String: String] = [
+      "url": url
+    ]
+    return registerInteraction(withParams: params)
+  }
+
+  /**
+   Handles formatting the interaction's request params for most URL formats.
    */
   class func registerInteraction(withTagId tagId: String, andParams params: [String: String]) {
     _log("Hitting Interactions route", level: "DEBUG")
     var mutableParams:[String: String] = params
     mutableParams["tech"] = "n"
     mutableParams["tag_id"] = tagId
+    return registerInteraction(withParams: mutableParams)
+  }
 
-    _log("Params: \(mutableParams)", level: "DEBUG")
-
+  /**
+   Handles formatting request headers and submitting the actual interaction to the mTag API.  Passes response along to proper delegate.
+   */
+  class func registerInteraction(withParams params: [String: String]) {
+    _log("registering interaction with params: \(params)", level: "DEBUG")
     // override the user agent if the user chooses
     var additionalHeaders : [String: String] = [:]
     if self.overrideUserAgent {
@@ -228,7 +249,7 @@ open class API: NSObject {
     }
 
     let targetUrl = "https://api.mtag.io/v2/interactions"
-    Alamofire.request(targetUrl, method: HTTPMethod.post, parameters: mutableParams, headers: additionalHeaders).responseJSON { response in
+    Alamofire.request(targetUrl, method: HTTPMethod.post, parameters: params, headers: additionalHeaders).responseJSON { response in
       if let json = response.result.value {
         if let jsonAsDict = json as? [String: Any] {
           let formattedResponse = parseAPIResponse(jsonAsDict)
