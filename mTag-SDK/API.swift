@@ -70,7 +70,8 @@ open class API: NSObject {
     let urlParts = url.components(separatedBy: "/")
 
     // if we have a url with a < 6 length slug we can pass the whole url to the interaction
-    if let slug: String = String(url.split(separator: "?")[0].split(separator: "/").last!) {
+    let slug: String = String(url.split(separator: "?")[0].split(separator: "/").last ?? "")
+    if !slug.isEmpty {
       if slug.count < MTAG_ID_B36_LENGTH {
         return registerInteraction(withUrl: url)
       }
