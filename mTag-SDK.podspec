@@ -95,7 +95,7 @@ Pod::Spec.new do |s|
 
   s.source_files  = "mTag-SDK", "mTag-SDK/*.{h,m}"
   s.exclude_files = "Classes/Exclude"
-  s.dependency 'Alamofire', '~> 4.5'
+  s.dependency 'Alamofire', '~> 4.9'
 
   # s.public_header_files = "Classes/**/*.h"
 
