@@ -70,7 +70,8 @@ open class API: NSObject {
     let urlParts = url.components(separatedBy: "/")
 
     // if we have a url with a < 6 length slug we can pass the whole url to the interaction
-    if let slug: String = String(url.split(separator: "?")[0].split(separator: "/").last!) {
+    let slug: String = String(url.split(separator: "?")[0].split(separator: "/").last ?? "")
+    if !slug.isEmpty {
       if slug.count < MTAG_ID_B36_LENGTH {
         return registerInteraction(withUrl: url)
       }
@@ -280,6 +281,11 @@ open class API: NSObject {
 
     let device = jsonAsDict["device"] as? [String: Any] ?? nil
     formattedResponse["deviceCountry"] = device?["country"] as? String ?? nil
+
+    if let tampered = jsonAsDict["tampered"] as? Bool {
+      // true if closed, false if opened, null if registered as tamper but not verified by dashboard
+      formattedResponse["tampered"] = tampered
+    }
 
     // get tagVerified.  Should return as Int but check for String just for robustness
     if let verified = jsonAsDict["tag_verified"] as? Int {

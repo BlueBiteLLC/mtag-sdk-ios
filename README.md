@@ -5,7 +5,20 @@ iOS SDK for the  mTag Platform
 
 Simply clone this repo and add `mTag-SDK` as a framework for your project (or add it as a local pod to your podspec if using CocoaPods).
 
-Note that this pod includes `Alamofire ~> 4.5` as a dependency.
+Note that this pod includes `Alamofire ~> 4.9` as a dependency.
+
+Cocoapods also supports pulling the pod from this repo. If desired, format your podfile like:
+
+```
+pod 'mTag-SDK', :git => 'https://github.com/BlueBiteLLC/mtag-sdk-ios'
+```
+
+If using the github target, you can specify a specific release using the `tag` param, like:
+```
+pod 'mTag-SDK', :git => 'https://github.com/BlueBiteLLC/mtag-sdk-ios', :tag => '<version number>'
+```
+
+If not using a tag, the most recent `master` version will be pulled.
 
 ### Usage
 
