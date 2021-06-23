@@ -9,7 +9,8 @@ target 'mTag-SDK' do
   pod 'Alamofire', '~> 5.4.3'
 
   target 'mTag-SDKTests' do
-    inherit! :search_paths
+    use_frameworks!
+    pod 'Alamofire', '~> 5.4.3'
     # Pods for testing
   end
 
