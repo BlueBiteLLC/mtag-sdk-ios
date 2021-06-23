@@ -241,17 +241,21 @@ open class API: NSObject {
   class func registerInteraction(withParams params: [String: String]) {
     _log("registering interaction with params: \(params)", level: "DEBUG")
     // override the user agent if the user chooses
-    var additionalHeaders : [String: String] = [:]
+    var additionalHeaders : HTTPHeaders = [:]
     if self.overrideUserAgent {
-      additionalHeaders["User-Agent"] = "mTag-SDK request/Alamofire4.x"
+      additionalHeaders["User-Agent"] = "mTag-SDK request/Alamofire5.x"
     }
     if self.overrideHeaderCookie {
       additionalHeaders["Cookie"] = ""
     }
 
     let targetUrl = "https://api.mtag.io/v2/interactions"
-    Alamofire.request(targetUrl, method: HTTPMethod.post, parameters: params, headers: additionalHeaders).responseJSON { response in
-      if let json = response.result.value {
+    AF.request(targetUrl,
+               method: HTTPMethod.post,
+               parameters: params,
+               headers: additionalHeaders
+    ).responseJSON { response in
+      if let json = response.value {
         if let jsonAsDict = json as? [String: Any] {
           let formattedResponse = parseAPIResponse(jsonAsDict)
           delegate?.interactionDataWasReceived(withResults: formattedResponse)
