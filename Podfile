@@ -6,7 +6,7 @@ target 'mTag-SDK' do
   use_frameworks!
 
   # Pods for mTag-SDK
-  pod 'Alamofire', '~> 4.7.3'
+  pod 'Alamofire', '~> 5.4.3'
 
   target 'mTag-SDKTests' do
     inherit! :search_paths
