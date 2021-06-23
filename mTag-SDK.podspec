@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
   #
 
   s.name         = "mTag-SDK"
-  s.version      = "1.3.0"
+  s.version      = "1.4.0"
   s.summary      = "Facilitates registering NFC Interactions with the Blue Bite API."
 
   # This description is used to generate tags and improve search results.
@@ -95,7 +95,7 @@ Pod::Spec.new do |s|
 
   s.source_files  = "mTag-SDK", "mTag-SDK/*.{h,m}"
   s.exclude_files = "Classes/Exclude"
-  s.dependency 'Alamofire', '~> 4.9'
+  s.dependency 'Alamofire', '~> 5.4.3'
 
   # s.public_header_files = "Classes/**/*.h"
 
